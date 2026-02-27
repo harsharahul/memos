@@ -123,9 +123,9 @@ Plugins live in `plugin/` (scheduler, email, filter, webhook, markdown, httpgett
 
 ### Branch Strategy
 
-- **`main`** is kept as a clean mirror of `upstream/main`. Never commit custom work directly to `main`.
+- **`main`** tracks `upstream/main` and may contain fork-specific tooling (CLAUDE.md, sync workflow). Feature work still goes on `harsha/*` branches.
 - **Custom work** goes on `harsha/`-prefixed feature branches (e.g., `harsha/distributedsession`).
-- Automated weekly sync via `.github/workflows/sync-upstream.yml` fast-forwards `main` from upstream. Can also be triggered manually from the Actions tab.
+- Automated weekly sync via `.github/workflows/sync-upstream.yml` merges upstream into `main`. Can also be triggered manually from the Actions tab.
 
 ### Active Fork Branches
 
@@ -139,7 +139,7 @@ Plugins live in `plugin/` (scheduler, email, filter, webhook, markdown, httpgett
 # Sync main from upstream
 git fetch upstream
 git checkout main
-git merge --ff-only upstream/main
+git merge upstream/main --no-edit
 git push origin main
 
 # Rebase a feature branch onto updated main
@@ -150,7 +150,7 @@ git push origin harsha/distributedsession --force-with-lease
 
 ### Rules for Fork Work
 
-1. **Keep `main` clean** — all customizations on feature branches, never on `main`.
+1. **Keep `main` minimal** — only fork-specific tooling (CLAUDE.md, workflows) on `main`. Feature work goes on `harsha/*` branches.
 2. **Rebase, don't merge** upstream into feature branches — keeps history linear and conflicts localized.
 3. **Check for overlap before syncing** — run `git diff main..upstream/main --stat` and compare with files your branches touch.
 4. **Update the branch table above** when adding or removing custom branches.
